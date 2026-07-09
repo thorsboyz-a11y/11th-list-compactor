@@ -146,7 +146,7 @@ def compact_list(army_list):
                 in_characters_section = (line == "CHARACTERS")
 
                 output.append("")
-                output.append(line)
+                output.append(line.upper())
 
                 continue
 
