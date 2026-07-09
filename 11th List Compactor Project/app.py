@@ -151,7 +151,7 @@ def compact_list(army_list):
                 continue
 
             # Unit header
-            if "points)" in line.lower():
+            if "points)" or "pts)" in line.lower():
 
                 flush_models(output, current_models)
 
@@ -204,15 +204,33 @@ def compact_list(army_list):
             # Keep model count lines
 
             # Add Enhancement tag directly to unit line
-            if "enhancement:" in line.lower() or "enhancements:" in line.lower():
+            if (
+                    "enhancement:" in line.lower()
+                    or "enhancements:" in line.lower()
+                    or (
+                    "+" in line
+                    and "pts" in line.lower()
+                    and line.startswith("•")
+            )
+            ):
 
                 if current_unit_index is not None:
-                    enhancement = (
-                        line.replace("•", "")
-                        .replace("Enhancement:", "")
-                        .replace("Enhancements:", "")
-                        .strip()
-                    )
+
+                    if "enhancement" in line.lower():
+
+                        enhancement = (
+                            line.replace("•", "")
+                            .replace("Enhancement:", "")
+                            .replace("Enhancements:", "")
+                            .strip()
+                        )
+
+                    else:
+                        enhancement = (
+                            line.replace("•", "")
+                            .split("(")[0]
+                            .strip()
+                        )
 
                     output[current_unit_index] += f", Enh: {enhancement}"
 
