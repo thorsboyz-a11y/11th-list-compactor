@@ -48,7 +48,7 @@ def compact_list(army_list):
         lines = army_list.split("\n")
 
         valid_list = any(
-            "points)" in line.lower()
+            ("point" in line.lower() or "pts" in line.lower())
             for line in lines
         )
 
