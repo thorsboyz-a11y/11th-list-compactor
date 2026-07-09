@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>11th List Compactor</title>
+
+    <style>
+    body {
+        max-width: 1400px;
+        margin: auto;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background-color: #1e1e1e;
+        color: white;
+    }
+
+    .container {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+    }
+
+    .column {
+        width: 40%;
+    }
+
+    textarea {
+        width: 100%;
+        height: 500px;
+        background-color: #2d2d2d;
+        color: white;
+        border: 1px solid #666;
+        padding: 10px;
+        font-family: Consolas, monospace;
+        box-sizing: border-box;
+    }
+
+    .button-container {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    button {
+        padding: 12px 24px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    h1, h2 {
+        text-align: center;
+    }
+
+    @media (max-width: 900px) {
+
+        button {
+            width: 100%;
+        }
+
+        .container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .column {
+            width: 95%;
+        }
+
+        textarea {
+            height: 200px;
+        }
+
+    }
+    </style>
+
+</head>
+<body>
+
+<h1>⚔ EclipseTragg's 11th List Compactor ⚔</h1>
+
+{% if error_message %}
+<div style="
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:red;
+    margin-bottom:15px;
+">
+    {{ error_message }}
+</div>
+
+
+{% elif result %}
+<div style="
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#90EE90;
+    margin-bottom:15px;
+">
+
+    {{ reduction_percent }}% Reduction
+
+</div>
+{% endif %}
+
+
+<form method="POST">
+
+    <div class="container">
+
+        <div class="column">
+
+            <h2>Original List</h2>
+
+            <textarea name="army_list">{{ request.form.get('army_list', '') }}</textarea>
+
+            <div class="button-container">
+
+            <button type="submit">
+                Compact List
+            </button>
+
+            {% if result %}
+            <br><br>
+
+            <button type="button" onclick="clearBoxes()">
+                Clear
+            </button>
+            {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="column">
+
+            <h2>Compacted List</h2>
+
+            <textarea id="outputBox" readonly>{{ result }}</textarea>
+
+            <div class="button-container">
+                <button type="button" onclick="copyOutput()">
+                    Copy Compacted List
+                </button>
+
+                <br><br>
+
+                <span id="copyMessage"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+<script>
+
+function copyOutput() {
+
+    const outputBox = document.getElementById("outputBox");
+
+    navigator.clipboard.writeText(outputBox.value);
+
+    document.getElementById("copyMessage").innerText = "Copied!";
+
+    setTimeout(() => {
+        document.getElementById("copyMessage").innerText = "";
+    }, 2000);
+}
+
+function clearBoxes() {
+
+    document.querySelector('textarea[name="army_list"]').value = "";
+
+    document.getElementById("outputBox").value = "";
+
+    window.location.href = "/";
+
+}
+
+</script>
+
+<footer style="
+    text-align:center;
+    color:#888;
+    font-size:14px;
+    margin-top:30px;
+    padding-top:10px;
+    border-top:1px solid #444;
+">
+
+    <p>
+        Developed by Tragg Thorsgard<br>
+        Not affiliated with or endorsed by Games Workshop Ltd.
+    </p>
+
+    <a href="https://buymeacoffee.com/eclipsetragg"
+       target="_blank"
+       style="
+           display:inline-block;
+           background-color:#FFDD00;
+           color:black;
+           text-decoration:none;
+           padding:12px 20px;
+           border-radius:8px;
+           font-weight:bold;
+       ">
+        ☕ Buy Me a Coffee
+    </a>
+
+</footer>
+
+</body>
+
+</html>
