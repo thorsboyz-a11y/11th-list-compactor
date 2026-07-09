@@ -117,7 +117,7 @@ def compact_list(army_list):
 
             if not in_units_section:
 
-                if line in section_headers:
+                if line.upper() in section_headers:
                     in_units_section = True
 
                 else:
@@ -139,7 +139,7 @@ def compact_list(army_list):
 
                 continue
 
-            if line in section_headers:
+            if line.upper() in section_headers:
                 flush_models(output, current_models)
 
                 current_section = line
@@ -152,19 +152,23 @@ def compact_list(army_list):
 
             # Unit header
             if "points)" in line.lower():
+
                 flush_models(output, current_models)
 
                 output.append(line)
 
                 current_unit_index = len(output) - 1
 
-                current_unit_remove_big_bullets = (
-                        current_section in [
+                # Start every unit as NOT stripping bullets
+                current_unit_remove_big_bullets = False
+
+                if current_section in [
                     "CHARACTERS",
                     "DEDICATED TRANSPORTS",
                     "ALLIED UNITS"
-                ]
-                )
+                ]:
+                    current_unit_remove_big_bullets = True
+
                 continue
 
             # Add Leader / Bodyguard tag directly to unit line
@@ -200,7 +204,7 @@ def compact_list(army_list):
             # Keep model count lines
 
             # Add Enhancement tag directly to unit line
-            if "Enhancements:" in line:
+            if "enhancement:" in line.lower() or "enhancements:" in line.lower():
 
                 if current_unit_index is not None:
                     enhancement = (
