@@ -190,7 +190,7 @@ def compact_list(army_list):
                 continue
 
             # Add Warlord tag directly to unit line
-            if "Warlord" in line:
+            if "warlord" in line.lower():
 
                 if current_unit_index is not None:
                     output[current_unit_index] += " - Warlord"
