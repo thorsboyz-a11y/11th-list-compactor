@@ -151,7 +151,7 @@ def compact_list(army_list):
                 continue
 
             # Unit header
-            if "points)" or "pts)" in line.lower():
+            if "points)" in line.lower() or "pts)" in line.lower():
 
                 flush_models(output, current_models)
 
